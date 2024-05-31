@@ -41,11 +41,49 @@ app.get('/prediction/landslide_flooding/:district', async(req, res) => {
 }
 });
 
+// Route to handle POST requests with latitude and longitude
+app.post('/seismic', (req, res) => {
+  // Extract latitude and longitude from the request body
+  const { latitude, longitude } = req.body;
+
+  // Check if latitude and longitude are provided
+  if (!latitude || !longitude) {
+      return res.status(400).json({ error: 'Latitude and longitude are required.' });
+  }
+
+  // Generate random seismic values based on the provided latitude and longitude
+  const seismicValues = generateSeismicValues(latitude, longitude);
+  // Send the generated seismic values as a response
+  res.json(seismicValues);
+});
+
 // Generate random value from array (mock function)
 function getRandomValue(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
 
+// Function to generate random seismic values
+function generateSeismicValues(latitude, longitude) {
+  // Simulate generating random seismic values based on the latitude and longitude
+  const amplitude = Math.random() * 10; // Random amplitude in millimeters
+  const frequency = Math.random() * 5; // Random frequency in Hertz
+  const duration = Math.random() * 60; // Random duration in seconds
+  const direction = Math.random() * 360; // Random direction in degrees
+  const energy = Math.random() * 1e12; // Random energy release in joules
+
+  // Construct an object with the generated values
+  const seismicData = {
+      latitude,
+      longitude,
+      amplitude,
+      frequency,
+      duration,
+      direction,
+      energy
+  };
+
+  return seismicData;
+}
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
